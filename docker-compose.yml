@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  bot:
+    container_name: bot
+    restart: always 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - BOT_TOKEN=0000001:AAAAAAA
+
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: my_bot
+    volumes: 
+      - ./metadata/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
